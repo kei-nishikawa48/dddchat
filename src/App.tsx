@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import ChatService from "./service/chatService";
 
 function App() {
+  const { chats, createChat, deleteChat, updateChat } = ChatService();
+  const [message, setMessage] = React.useState("");
+  const [updateMessage, setUpdateMessage] = React.useState("");
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input onChange={(e) => setMessage(e.target.value)} />
+      <button onClick={() => createChat(message)}>create</button>
+      {chats.map((item) => {
+        return (
+          <section key={item.chatId}>
+            <p>{item.message.value}</p>
+            <button
+              onClick={() => {
+                deleteChat(item.chatId);
+              }}
+            >
+              delete
+            </button>
+            <input
+              onChange={(e) => {
+                setUpdateMessage(e.target.value);
+              }}
+            />
+            <button onClick={() => updateChat(item.chatId, updateMessage)}>
+              update
+            </button>
+          </section>
+        );
+      })}
     </div>
   );
 }
